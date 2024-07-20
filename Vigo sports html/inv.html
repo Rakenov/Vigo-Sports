@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333333;
+            padding-top: 20px;
+            z-index: 1;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .banner {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            background-image: url('banner.jpg'); /* Cambia esta URL a la correcta */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            color: #333333;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .inventory-table th, .inventory-table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .inventory-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .inventory-table td button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .inventory-table td .update-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .inventory-table td .update-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .inventory-table td .delete-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .inventory-table td .delete-btn:hover {
+            background-color: #CC0000;
+        }
+
+        .add-product {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-product:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .form-group input[type="text"], .form-group input[type="number"], .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="unnamed.png" alt="Vigo Sports Logo">
+        </div>
+        <a href="trabajadores.html">Empleados</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="inv.html">Inventario</a>
+        <a href="garantia.html">Solicitudes de Garantía</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="analisis.html">Análisis de Venta</a>
+    </div>
+
+    <div class="banner"></div>
+
+    <div class="main-content">
+        <h1>Inventario</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, ID, o categoría">
+            <button onclick="searchProduct()">Buscar</button>
+        </div>
+        <table class="inventory-table">
+            <thead>
+                <tr>
+                    <th>ID de Producto</th>
+                    <th>Categoría</th>
+                    <th>Nombre del Producto</th>
+                    <th>Precio de Compra</th>
+                    <th>Precio de Venta</th>
+                    <th>Marca</th>
+                    <th>Descuento</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="inventoryTableBody">
+                <!-- Aquí se agregarán dinámicamente las filas de los productos -->
+            </tbody>
+        </table>
+        <a href="add_product.html" class="add-product">Agregar Nuevo Producto</a>
+    </div>
+
+    <script>
+        // Ejemplo de datos de inventario
+        const products = [
+            { id: '001', category: 'Deportes', name: 'Balón de Fútbol', purchasePrice: 10, salePrice: 15, brand: 'Nike', discount: 5, description: 'Balón de fútbol profesional.' },
+            { id: '002', category: 'Ropa', name: 'Camiseta Deportiva', purchasePrice: 8, salePrice: 12, brand: 'Adidas', discount: 10, description: 'Camiseta deportiva de alta calidad.' }
+            // Agrega más productos según sea necesario
+        ];
+
+        // Función para mostrar los productos en la tabla
+        function displayProducts(productList) {
+            const tableBody = document.getElementById('inventoryTableBody');
+            tableBody.innerHTML = '';
+            productList.forEach((product, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.category}</td>
+                    <td>${product.name}</td>
+                    <td>${product.purchasePrice}</td>
+                    <td>${product.salePrice}</td>
+                    <td>${product.brand}</td>
+                    <td>${product.discount}</td>
+                    <td>${product.description}</td>
+                    <td>
+                        <button class="update-btn" onclick="updateProduct(${index})">Actualizar</button>
+                        <button class="delete-btn" onclick="deleteProduct(${index})">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función de búsqueda de productos
+        function searchProduct() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const filteredProducts = products.filter(product => {
+                return product.name.toLowerCase().includes(query) || 
+                       product.id.toLowerCase().includes(query) || 
+                       product.category.toLowerCase().includes(query);
+            });
+            displayProducts(filteredProducts);
+        }
+
+        // Mostrar el formulario para agregar un nuevo producto
+        function showForm() {
+            document.getElementById('productFormContainer').style.display = 'block';
+        }
+
+        // Función para actualizar un producto (a implementar)
+        function updateProduct(index) {
+            // Lógica para actualizar el producto
+            console.log(`Actualizar producto en índice ${index}`);
+        }
+
+        // Función para eliminar un producto
+        function deleteProduct(index) {
+            products.splice(index, 1);
+            displayProducts(products);
+        }
+
+        // Mostrar los productos al cargar la página
+        window.onload = function() {
+            displayProducts(products);
+        };
+    </script>
+</body>
+</html>

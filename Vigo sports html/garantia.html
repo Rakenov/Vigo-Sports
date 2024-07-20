@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333333;
+            padding-top: 20px;
+            z-index: 1;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .banner {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            background-image: url('banner.jpg'); /* Cambia esta URL a la correcta */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            color: #333333;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+
+        .warranty-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .warranty-table th, .warranty-table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .warranty-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .warranty-table td button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .warranty-table td .update-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .warranty-table td .update-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .warranty-table td .delete-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .warranty-table td .delete-btn:hover {
+            background-color: #CC0000;
+        }
+
+        .add-garantia {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-warranty:hover {
+            background-color: #45a049;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="unnamed.png" alt="Vigo Sports Logo">
+        </div>
+        <a href="trabajadores.html">Empleados</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="inv.html">Inventario</a>
+        <a href="garantia.html">Solicitudes de Garantía</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="analisis.html">Análisis de Venta</a>
+    </div>
+    <div class="banner"></div>
+
+    <div class="main-content" id="solicitudes">
+        <h1>Solicitudes de Garantía</h1>
+        <div class="search-bar">
+            <input type="text" id="warrantySearchInput" placeholder="Buscar por ID, estado, o tipo de solicitud">
+            <button onclick="searchWarranty()">Buscar</button>
+        </div>
+        <table class="warranty-table">
+            <thead>
+                <tr>
+                    <th>ID de Garantía</th>
+                    <th>RUT de Empresa</th>
+                    <th>RUT de Cliente</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha Final</th>
+                    <th>Estado</th>
+                    <th>Tipo de Solicitud</th>
+                    <th>Descripción</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="warrantyTableBody">
+                <!-- Aquí se agregarán dinámicamente las filas de las garantías -->
+            </tbody>
+        </table>
+        <a href="add_garantia.html" class="add-garantia">Agregar Nueva Solicitud</a>
+    </div>
+
+    <script>
+        // Ejemplo de datos de solicitudes de garantía
+        const warranties = [
+            { id: '001', rutEmpresa: '12345678-9', rutCliente: '98765432-1', fechaInicio: '2023-01-01', fechaFinal: '2024-01-01', estado: 'En Proceso', tipoSolicitud: 'Reparación', descripcion: 'Reparación de bicicleta por defecto de fábrica' },
+            { id: '002', rutEmpresa: '12345678-9', rutCliente: '87654321-0', fechaInicio: '2023-02-15', fechaFinal: '2024-02-15', estado: 'Completada', tipoSolicitud: 'Cambio', descripcion: 'Cambio de casco por modelo incorrecto' }
+            // Agrega más solicitudes de garantía según sea necesario
+        ];
+
+        // Función para mostrar las solicitudes de garantía en la tabla
+        function displayWarranties(warrantyList) {
+            const tableBody = document.getElementById('warrantyTableBody');
+            tableBody.innerHTML = '';
+            warrantyList.forEach((warranty, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${warranty.id}</td>
+                    <td>${warranty.rutEmpresa}</td>
+                    <td>${warranty.rutCliente}</td>
+                    <td>${warranty.fechaInicio}</td>
+                    <td>${warranty.fechaFinal}</td>
+                    <td>${warranty.estado}</td>
+                    <td>${warranty.tipoSolicitud}</td>
+                    <td>${warranty.descripcion}</td>
+                    <td>
+                        <button class="update-btn" onclick="updateWarranty(${index})">Actualizar</button>
+                        <button class="delete-btn" onclick="deleteWarranty(${index})">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función de búsqueda de solicitudes de garantía
+        function searchWarranty() {
+            const searchInput = document.getElementById('warrantySearchInput').value.toLowerCase();
+            const filteredWarranties = warranties.filter(warranty =>
+                warranty.id.toLowerCase().includes(searchInput) ||
+                warranty.estado.toLowerCase().includes(searchInput) ||
+                warranty.tipoSolicitud.toLowerCase().includes(searchInput)
+            );
+            displayWarranties(filteredWarranties);
+        }
+
+        // Función para actualizar una solicitud de garantía
+        function updateWarranty(index) {
+            alert(`Actualizar solicitud de garantía: ${warranties[index].id}`);
+            // Aquí puedes agregar la lógica para actualizar la información de la garantía
+        }
+
+        // Función para eliminar una solicitud de garantía
+        function deleteWarranty(index) {
+            if (confirm(`¿Estás seguro de que deseas eliminar la solicitud de garantía ${warranties[index].id}?`)) {
+                warranties.splice(index, 1);
+                displayWarranties(warranties);
+            }
+        }
+
+        // Mostrar todas las solicitudes de garantía al cargar la página
+        window.onload = () => {
+            displayWarranties(warranties);
+        };
+    </script>
+</body>
+</html>

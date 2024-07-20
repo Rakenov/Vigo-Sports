@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Producto - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border-radius: 5px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .form-group input[type="text"], .form-group input[type="number"], .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro de Producto</h1>
+        <form id="productForm">
+            <div class="form-group">
+                <label for="productName">Nombre del Producto:</label>
+                <input type="text" id="productName" name="productName" required>
+            </div>
+            <div class="form-group">
+                <label for="purchasePrice">Precio de Compra:</label>
+                <input type="number" id="purchasePrice" name="purchasePrice" required>
+            </div>
+            <div class="form-group">
+                <label for="salePrice">Precio de Venta:</label>
+                <input type="number" id="salePrice" name="salePrice" required>
+            </div>
+            <div class="form-group">
+                <label for="brand">Marca:</label>
+                <input type="text" id="brand" name="brand" required>
+            </div>
+            <div class="form-group">
+                <label for="category">Categoría:</label>
+                <select id="category" name="category" required>
+                    <option value="maquina">Máquina</option>
+                    <option value="ciclismo">Ciclismo</option>
+                    <option value="entrenamiento">Entrenamiento</option>
+                    <option value="vestuario">Vestuario</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="quantity">Cantidad:</label>
+                <input type="number" id="quantity" name="quantity" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Descripción:</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Registrar Producto</button>
+        </form>
+    </div>
+</body>
+</html>

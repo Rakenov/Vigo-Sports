@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Empleado - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .form-group input[type="text"], .form-group input[type="date"], .form-group input[type="email"], .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .form-group input[type="radio"] {
+            margin-right: 10px;
+        }
+
+        .form-group .radio-group {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .form-group .radio-group label {
+            flex: 1;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registrar Empleado</h1>
+        <form id="employeeForm">
+            <div class="form-group">
+                <label for="rut">RUT:</label>
+                <input type="text" id="rut" name="rut" required>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+            </div>
+            <div class="form-group">
+                <label for="sueldo">Sueldo</label>
+                <input type="number" id="sueldo" name="sueldo" required>
+            </div>
+            <div class="form-group">
+                <label>Sexo:</label>
+                <div class="radio-group">
+                    <label for="sexoM">
+                        <input type="radio" id="sexoM" name="sexo" value="M" required> Masculino
+                    </label>
+                    <label for="sexoF">
+                        <input type="radio" id="sexoF" name="sexo" value="F" required> Femenino
+                    </label>
+                    <label for="sexoN">
+                        <input type="radio" id="sexoN" name="sexo" value="N" required> Otro
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="puesto">Puesto:</label>
+                <select id="puesto" name="puesto" required>
+                    <option value="Gerente">Gerente</option>
+                    <option value="Vendedor a tiempo medio">Vendedor a tiempo medio</option>
+                    <option value="Vendedor a tiempo completo">Vendedor a tiempo completo</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" name="telefono" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo Electrónico:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit" class="submit-btn">Registrar</button>
+        </form>
+    </div>
+
+    <script>
+        // Función para manejar el envío del formulario
+        document.getElementById('employeeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const newEmployee = {
+                rut: document.getElementById('rut').value,
+                nombre: document.getElementById('nombre').value,
+                fechaNacimiento: document.getElementById('fechaNacimiento').value,
+                sexo: document.querySelector('input[name="sexo"]:checked').value,
+                puesto: document.getElementById('puesto').value,
+                telefono: document.getElementById('telefono').value,
+                email: document.getElementById('email').value
+            };
+
+            // Aquí puedes agregar la lógica para enviar los datos del nuevo empleado al servidor o agregarlo a la lista de empleados
+            console.log('Nuevo empleado registrado:', newEmployee);
+
+            // Resetear el formulario después de enviar
+            document.getElementById('employeeForm').reset();
+        });
+    </script>
+</body>
+</html>

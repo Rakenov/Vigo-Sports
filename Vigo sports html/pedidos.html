@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333333;
+            padding-top: 20px;
+            z-index: 1;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .banner {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            background-image: url('banner.jpg'); /* Cambia esta URL a la correcta */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            color: #333333;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .search-bar input[type="text"], .search-bar input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+
+        .orders-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .orders-table th, .orders-table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .orders-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .orders-table td button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .orders-table td .update-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .orders-table td .update-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .orders-table td .delete-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .orders-table td .delete-btn:hover {
+            background-color: #CC0000;
+        }
+
+        .add-pedido {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-order-btn:hover {
+            background-color: #45a049;
+        }
+
+        .add-order-form {
+            display: none;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .add-order-form input[type="text"], .add-order-form input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .add-order-form button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-order-form button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="unnamed.png" alt="Vigo Sports Logo">
+        </div>
+        <a href="trabajadores.html">Empleados</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="inv.html">Inventario</a>
+        <a href="garantia.html">Solicitudes de Garantía</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="analisis.html">Análisis de Venta</a>
+    </div>
+
+    <div class="banner"></div>
+
+    <div class="main-content">
+        <h1>Pedidos</h1>
+        <div class="search-bar">
+            <input type="text" id="searchID" placeholder="Buscar por ID de Pedido">
+            <input type="text" id="searchEstado" placeholder="Buscar por Estado de Pedido">
+            <input type="text" id="searchTipo" placeholder="Buscar por Tipo de Pedido">
+            <input type="date" id="searchFechaInicio" placeholder="Fecha de Solicitud Inicio">
+            <input type="date" id="searchFechaFin" placeholder="Fecha de Solicitud Fin">
+            <button onclick="searchOrders()">Buscar</button>
+        </div>
+        <table class="orders-table">
+            <thead>
+                <tr>
+                    <th>ID de Pedido</th>
+                    <th>Estado de Pedido</th>
+                    <th>Tipo de Pedido</th>
+                    <th>Fecha de Solicitud</th>
+                    <th>Sucursal Destino</th>
+                    <th>Detalles del Pedido</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="ordersTableBody">
+                <!-- Aquí se agregarán dinámicamente las filas de los pedidos -->
+            </tbody>
+        </table>
+        <a href="add_pedido.html" class="add-pedido">Agregar Nuevo Empleado</a>   
+    </div>
+
+    <script>
+        const orders = [];
+
+        // Función para mostrar los pedidos en la tabla
+        function displayOrders(ordersList) {
+            const tableBody = document.getElementById('ordersTableBody');
+            tableBody.innerHTML = '';
+            ordersList.forEach((order, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${order.idPedido}</td>
+                    <td>${order.estadoPedido}</td>
+                    <td>${order.tipoPedido}</td>
+                    <td>${order.fechaSolicitud}</td>
+                    <td>${order.sucursalDestino}</td>
+                    <td>${order.detallesPedido}</td>
+                    <td>
+                        <button class="update-btn" onclick="updateOrder(${index})">Actualizar</button>
+                        <button class="delete-btn" onclick="deleteOrder(${index})">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función de búsqueda de pedidos
+        function searchOrders() {
+            const searchID = document.getElementById('searchID').value.toLowerCase();
+            const searchEstado = document.getElementById('searchEstado').value.toLowerCase();
+            const searchTipo = document.getElementById('searchTipo').value.toLowerCase();
+            const searchFechaInicio = document.getElementById('searchFechaInicio').value;
+            const searchFechaFin = document.getElementById('searchFechaFin').value;
+
+            const filteredOrders = orders.filter(order => {
+                const orderDate = new Date(order.fechaSolicitud);
+                const startDate = searchFechaInicio ? new Date(searchFechaInicio) : null;
+                const endDate = searchFechaFin ? new Date(searchFechaFin) : null;
+
+                return (
+                    (searchID === '' || order.idPedido.toLowerCase().includes(searchID)) &&
+                    (searchEstado === '' || order.estadoPedido.toLowerCase().includes(searchEstado)) &&
+                    (searchTipo === '' || order.tipoPedido.toLowerCase().includes(searchTipo)) &&
+                    (!startDate || orderDate >= startDate) &&
+                    (!endDate || orderDate <= endDate)
+                );
+            });
+
+            displayOrders(filteredOrders);
+        }
+
+        // Función para actualizar un pedido
+        function updateOrder(index) {
+            alert(`Actualizar pedido: ${orders[index].idPedido}`);
+            // Aquí puedes agregar la lógica para actualizar la información del pedido
+        }
+
+        // Función para eliminar un pedido
+        function deleteOrder(index) {
+            if (confirm(`¿Estás seguro de que deseas eliminar el pedido ${orders[index].idPedido}?`)) {
+                orders.splice(index, 1);
+                displayOrders(orders);
+            }
+        }
+
+        // Función para mostrar/ocultar el formulario de agregar pedido
+        function toggleAddOrderForm() {
+            const form = document.getElementById('addOrderForm');
+            form.style.display = form.style.display === 'none' || form.style.display === '' ? 'flex' : 'none';
+        }
+
+        // Función para agregar un pedido
+        function addOrder() {
+            const idPedido = document.getElementById('addID').value;
+            const estadoPedido = document.getElementById('addEstado').value;
+            const tipoPedido = document.getElementById('addTipo').value;
+            const fechaSolicitud = document.getElementById('addFecha').value;
+            const sucursalDestino = document.getElementById('addSucursal').value;
+            const detallesPedido = document.getElementById('addDetalles').value;
+
+            if (idPedido && estadoPedido && tipoPedido && fechaSolicitud && sucursalDestino && detallesPedido) {
+                orders.push({ idPedido, estadoPedido, tipoPedido, fechaSolicitud, sucursalDestino, detallesPedido });
+                displayOrders(orders);
+                toggleAddOrderForm();
+            } else {
+                alert('Por favor, complete todos los campos.');
+            }
+        }
+
+        // Ejemplo de datos de pedidos (puedes modificarlos según tus necesidades)
+        orders.push(
+            { idPedido: 'P001', estadoPedido: 'Pendiente', tipoPedido: 'Normal', fechaSolicitud: '2024-06-20', sucursalDestino: 'Sucursal A', detallesPedido: 'Producto X, Producto Y' },
+            { idPedido: 'P002', estadoPedido: 'Completado', tipoPedido: 'Urgente', fechaSolicitud: '2024-06-21', sucursalDestino: 'Sucursal B', detallesPedido: 'Producto Z, Producto W' }
+            // Agrega más pedidos según sea necesario
+        );
+
+        // Mostrar todos los pedidos al cargar la página
+        window.onload = () => {
+            displayOrders(orders);
+        };
+    </script>
+</body>
+</html>

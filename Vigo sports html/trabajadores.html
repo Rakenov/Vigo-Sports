@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333333;
+            padding-top: 20px;
+            z-index: 1;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .banner {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            background-image: url('banner.jpg'); /* Cambia esta URL a la correcta */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            color: #333333;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+
+        .employee-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .employee-table th, .employee-table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .employee-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .employee-table td button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .employee-table td .update-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .employee-table td .update-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .employee-table td .delete-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .employee-table td .delete-btn:hover {
+            background-color: #CC0000;
+        }
+
+        .add-employee {
+            display: inline-block;
+            margin-top: 40px; /* Ajusta este valor según sea necesario */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .add-employee:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="unnamed.png" alt="Vigo Sports Logo">
+        </div>
+        <a href="trabajadores.html">Empleados</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="inv.html">Inventario</a>
+        <a href="garantia.html">Solicitudes de Garantía</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="analisis.html">Análisis de Venta</a>
+    </div>
+
+    <div class="banner"></div>
+
+    <div class="main-content">
+        <h1>Empleados</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Buscar por nombre, RUT, o sucursal">
+            <button onclick="searchEmployee()">Buscar</button>
+        </div>
+        <table class="employee-table">
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>Dependencia</th>
+                    <th>Nombre</th>
+                    <th>Sexo</th>
+                    <th>Puesto</th>
+                    <th>Fecha de Nacimiento</th>
+                    <th>Fecha de Contratación</th>
+                    <th>Horas Trabajadas</th>
+                    <th>Sucursal</th>
+                    <th>Teléfono</th>
+                    <th>Correo Electrónico</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="employeeTableBody">
+                <!-- Aquí se agregarán dinámicamente las filas de los empleados -->
+            </tbody>
+        </table>
+        <a href="add_emp.html" class="add-employee">Agregar Nuevo Empleado</a>
+    </div>
+
+    <script>
+        // Ejemplo de datos de empleados
+        const employees = [
+            { rut: '12345678-9', dependencia: '001', nombre: 'Juan Pérez', sexo: 'M', puesto: 'Gerente', fechaNacimiento: '1980-01-01', fechaContratacion: '2010-05-15', horasTrabajadas: 40, sucursal: '01', telefono: '123456789', email: 'juan.perez@vigosports.com' },
+            { rut: '98765432-1', dependencia: '002', nombre: 'Ana García', sexo: 'F', puesto: 'Vendedora', fechaNacimiento: '1990-02-15', fechaContratacion: '2015-07-20', horasTrabajadas: 35, sucursal: '02', telefono: '987654321', email: 'ana.garcia@vigosports.com' }
+            // Agrega más empleados según sea necesario
+        ];
+
+        // Función para mostrar los empleados en la tabla
+        function displayEmployees(employeeList) {
+            const tableBody = document.getElementById('employeeTableBody');
+            tableBody.innerHTML = '';
+            employeeList.forEach((employee, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${employee.rut}</td>
+                    <td>${employee.dependencia}</td>
+                    <td>${employee.nombre}</td>
+                    <td>${employee.sexo}</td>
+                    <td>${employee.puesto}</td>
+                    <td>${employee.fechaNacimiento}</td>
+                    <td>${employee.fechaContratacion}</td>
+                    <td>${employee.horasTrabajadas}</td>
+                    <td>${employee.sucursal}</td>
+                    <td>${employee.telefono}</td>
+                    <td>${employee.email}</td>
+                    <td>
+                        <button class="update-btn" onclick="updateEmployee(${index})">Actualizar</button>
+                        <button class="delete-btn" onclick="deleteEmployee(${index})">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función de búsqueda de empleados
+        function searchEmployee() {
+            const searchInput = document.getElementById('searchInput').value.toLowerCase();
+            const filteredEmployees = employees.filter(employee =>
+                employee.nombre.toLowerCase().includes(searchInput) ||
+                employee.rut.toLowerCase().includes(searchInput) ||
+                employee.sucursal.toLowerCase().includes(searchInput)
+            );
+            displayEmployees(filteredEmployees);
+        }
+
+        // Función para actualizar un empleado
+        function updateEmployee(index) {
+            alert(`Actualizar empleado: ${employees[index].nombre}`);
+            // Aquí puedes agregar la lógica para actualizar la información del empleado
+        }
+
+        // Función para eliminar un empleado
+        function deleteEmployee(index) {
+            if (confirm(`¿Estás seguro de que deseas eliminar a ${employees[index].nombre}?`)) {
+                employees.splice(index, 1);
+                displayEmployees(employees);
+            }
+        }
+
+        // Mostrar todos los empleados al cargar la página
+        window.onload = () => {
+            displayEmployees(employees);
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333333;
+            padding-top: 20px;
+            z-index: 1;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .banner {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            background-image: url('banner.jpg'); /* Cambia esta URL a la correcta */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            color: #333333;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+
+        .provider-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .provider-table th, .provider-table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .provider-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .provider-table td button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .provider-table td .update-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .provider-table td .update-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .provider-table td .delete-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .provider-table td .delete-btn:hover {
+            background-color: #CC0000;
+        }
+
+        .add-provider {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .add-provider:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="unnamed.png" alt="Vigo Sports Logo">
+        </div>
+        <a href="trabajadores.html">Empleados</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="inv.html">Inventario</a>
+        <a href="garantia.html">Solicitudes de Garantía</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="analisis.html">Análisis de Venta</a>
+    </div>
+    <div class="banner"></div>
+
+    <div class="main-content" id="empresas">
+        <h1>Empresas</h1>
+        <div class="search-bar">
+            <input type="text" id="companySearchInput" placeholder="Buscar por RUT, nombre, teléfono, correo, representante">
+            <button onclick="searchCompany()">Buscar</button>
+        </div>
+        <table class="provider-table">
+            <thead>
+                <tr>
+                    <th>RUT de Empresa</th>
+                    <th>Nombre</th>
+                    <th>Teléfono</th>
+                    <th>Correo Electrónico</th>
+                    <th>Fecha de Última Compra</th>
+                    <th>Nombre Representante</th>
+                    <th>Teléfono Representante</th>
+                    <th>Correo Electrónico Representante</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="companyTableBody">
+                <!-- Aquí se agregarán dinámicamente las filas de las empresas -->
+            </tbody>
+        </table>
+        <a href="add_empresa.html" class="add-provider">Agregar Nueva Empresa</a>
+    </div>
+
+    <script>
+        // Ejemplo de datos de empresas
+        const companies = [
+            { rut: '12345678-9', nombre: 'Empresa A', telefono: '987654321', correo: 'contacto@empresaA.com', fechaUltimaCompra: '2023-01-15', nombreRepresentante: 'Juan Pérez', telefonoRepresentante: '912345678', correoRepresentante: 'juan.perez@empresaA.com' },
+            { rut: '98765432-1', nombre: 'Empresa B', telefono: '876543210', correo: 'contacto@empresaB.com', fechaUltimaCompra: '2023-03-22', nombreRepresentante: 'María López', telefonoRepresentante: '923456789', correoRepresentante: 'maria.lopez@empresaB.com' }
+            // Agrega más empresas según sea necesario
+        ];
+
+        // Función para mostrar las empresas en la tabla
+        function displayCompanies(companyList) {
+            const tableBody = document.getElementById('companyTableBody');
+            tableBody.innerHTML = '';
+            companyList.forEach((company, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${company.rut}</td>
+                    <td>${company.nombre}</td>
+                    <td>${company.telefono}</td>
+                    <td>${company.correo}</td>
+                    <td>${company.fechaUltimaCompra}</td>
+                    <td>${company.nombreRepresentante}</td>
+                    <td>${company.telefonoRepresentante}</td>
+                    <td>${company.correoRepresentante}</td>
+                    <td>
+                        <button class="update-btn" onclick="updateCompany(${index})">Actualizar</button>
+                        <button class="delete-btn" onclick="deleteCompany(${index})">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función de búsqueda de empresas
+        function searchCompany() {
+            const searchInput = document.getElementById('companySearchInput').value.toLowerCase();
+            const filteredCompanies = companies.filter(company =>
+                company.rut.toLowerCase().includes(searchInput) ||
+                company.nombre.toLowerCase().includes(searchInput) ||
+                company.telefono.toLowerCase().includes(searchInput) ||
+                company.correo.toLowerCase().includes(searchInput) ||
+                company.nombreRepresentante.toLowerCase().includes(searchInput) ||
+                company.telefonoRepresentante.toLowerCase().includes(searchInput) ||
+                company.correoRepresentante.toLowerCase().includes(searchInput)
+            );
+            displayCompanies(filteredCompanies);
+        }
+
+        // Función para actualizar una empresa
+        function updateCompany(index) {
+            alert(`Actualizar empresa: ${companies[index].nombre}`);
+            // Aquí puedes agregar la lógica para actualizar la información de la empresa
+        }
+
+        // Función para eliminar una empresa
+        function deleteCompany(index) {
+            if (confirm(`¿Estás seguro de que deseas eliminar la empresa ${companies[index].nombre}?`)) {
+                companies.splice(index, 1);
+                displayCompanies(companies);
+            }
+        }
+
+        // Mostrar todas las empresas al cargar la página
+        window.onload = () => {
+            displayCompanies(companies);
+        };
+    </script>
+</body>
+</html>

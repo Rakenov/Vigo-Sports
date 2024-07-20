@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333333;
+            padding-top: 20px;
+            z-index: 1;
+        }
+
+        .sidebar a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: white;
+            display: block;
+        }
+
+        .sidebar a:hover {
+            background-color: #575757;
+        }
+
+        .banner {
+            width: calc(100% - 250px);
+            margin-left: 250px;
+            background-image: url('banner.jpg'); /* Cambia esta URL a la correcta */
+            background-size: cover;
+            background-position: center;
+            height: 200px;
+            position: relative;
+            z-index: 0;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+        }
+
+        .main-content h1 {
+            color: #333333;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo img {
+            width: 150px;
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 20px;
+            gap: 10px;
+        }
+
+        .search-bar input[type="text"], .search-bar input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+
+        .search-bar button:hover {
+            background-color: #45a049;
+        }
+
+        .sales-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .sales-table th, .sales-table td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        .sales-table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .sales-table td button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .sales-table td .update-btn {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .sales-table td .update-btn:hover {
+            background-color: #FF8C00;
+        }
+
+        .sales-table td .delete-btn {
+            background-color: #FF0000;
+            color: white;
+        }
+
+        .sales-table td .delete-btn:hover {
+            background-color: #CC0000;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="unnamed.png" alt="Vigo Sports Logo">
+        </div>
+        <a href="trabajadores.html">Empleados</a>
+        <a href="proveedores.html">Proveedores</a>
+        <a href="inv.html">Inventario</a>
+        <a href="garantia.html">Solicitudes de Garantía</a>
+        <a href="ventas.html">Ventas</a>
+        <a href="pedidos.html">Pedidos</a>
+        <a href="analisis.html">Análisis de Venta</a>
+    </div>
+
+    <div class="banner"></div>
+
+    <div class="main-content">
+        <h1>Ventas</h1>
+        <div class="search-bar">
+            <input type="text" id="searchID" placeholder="Buscar por ID de Venta">
+            <input type="text" id="searchRUT" placeholder="Buscar por RUT Empleado">
+            <input type="text" id="searchCodigo" placeholder="Buscar por Código de Dependencia">
+            <input type="date" id="searchFechaInicio" placeholder="Fecha de Inicio">
+            <input type="date" id="searchFechaFin" placeholder="Fecha de Fin">
+            <button onclick="searchSales()">Buscar</button>
+        </div>
+        <table class="sales-table">
+            <thead>
+                <tr>
+                    <th>ID de Venta</th>
+                    <th>RUT Empleado</th>
+                    <th>Código de Dependencia</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Monto Total</th>
+                    <th>Método de Pago</th>
+                    <th>Detalle</th>
+                    <th>Fecha de Término de Garantía</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="salesTableBody">
+                <!-- Aquí se agregarán dinámicamente las filas de las ventas -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const sales = [];
+
+        // Función para mostrar las ventas en la tabla
+        function displaySales(salesList) {
+            const tableBody = document.getElementById('salesTableBody');
+            tableBody.innerHTML = '';
+            salesList.forEach((sale, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${sale.idVenta}</td>
+                    <td>${sale.rutEmpleado}</td>
+                    <td>${sale.codigoDependencia}</td>
+                    <td>${sale.fechaVenta}</td>
+                    <td>${sale.horaVenta}</td>
+                    <td>${sale.montoTotal}</td>
+                    <td>${sale.metodoPago}</td>
+                    <td>${sale.detalle}</td>
+                    <td>${sale.fechaTerminoGarantia}</td>
+                    <td>
+                        <button class="update-btn" onclick="updateSale(${index})">Actualizar</button>
+                        <button class="delete-btn" onclick="deleteSale(${index})">Eliminar</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Función de búsqueda de ventas
+        function searchSales() {
+            const searchID = document.getElementById('searchID').value.toLowerCase();
+            const searchRUT = document.getElementById('searchRUT').value.toLowerCase();
+            const searchCodigo = document.getElementById('searchCodigo').value.toLowerCase();
+            const searchFechaInicio = document.getElementById('searchFechaInicio').value;
+            const searchFechaFin = document.getElementById('searchFechaFin').value;
+
+            const filteredSales = sales.filter(sale => {
+                const saleDate = new Date(sale.fechaVenta);
+                const startDate = searchFechaInicio ? new Date(searchFechaInicio) : null;
+                const endDate = searchFechaFin ? new Date(searchFechaFin) : null;
+
+                return (
+                    (searchID === '' || sale.idVenta.toLowerCase().includes(searchID)) &&
+                    (searchRUT === '' || sale.rutEmpleado.toLowerCase().includes(searchRUT)) &&
+                    (searchCodigo === '' || sale.codigoDependencia.toLowerCase().includes(searchCodigo)) &&
+                    (!startDate || saleDate >= startDate) &&
+                    (!endDate || saleDate <= endDate)
+                );
+            });
+
+            displaySales(filteredSales);
+        }
+
+        // Función para actualizar una venta
+        function updateSale(index) {
+            alert(`Actualizar venta: ${sales[index].idVenta}`);
+            // Aquí puedes agregar la lógica para actualizar la información de la venta
+        }
+
+        // Función para eliminar una venta
+        function deleteSale(index) {
+            if (confirm(`¿Estás seguro de que deseas eliminar la venta ${sales[index].idVenta}?`)) {
+                sales.splice(index, 1);
+                displaySales(sales);
+            }
+        }
+
+        // Ejemplo de datos de ventas (puedes modificarlos según tus necesidades)
+        sales.push(
+            { idVenta: '001', rutEmpleado: '12345678-9', codigoDependencia: '001', fechaVenta: '2024-06-20', horaVenta: '15:30', montoTotal: 150.00, metodoPago: 'Débito', detalle: 'Producto A, Producto B', fechaTerminoGarantia: '2024-12-20' },
+            { idVenta: '002', rutEmpleado: '98765432-1', codigoDependencia: '002', fechaVenta: '2024-06-21', horaVenta: '10:45', montoTotal: 200.00, metodoPago: 'Crédito', detalle: 'Producto C, Producto D', fechaTerminoGarantia: '2024-12-21' }
+            // Agrega más ventas según sea necesario
+        );
+
+        // Mostrar todas las ventas al cargar la página
+        window.onload = () => {
+            displaySales(sales);
+        };
+    </script>
+</body>
+</html>

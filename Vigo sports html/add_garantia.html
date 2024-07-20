@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitud de Garantía - Vigo Sports</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            width: 50%;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .form-group input[type="text"], .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Solicitud de Garantía</h1>
+        <form id="warrantyForm">
+            <div class="form-group">
+                <label for="idVenta">ID de Venta:</label>
+                <input type="text" id="idVenta" name="idVenta" required>
+            </div>
+            <div class="form-group">
+                <label for="rutCliente">RUT Cliente:</label>
+                <input type="text" id="rutCliente" name="rutCliente" required>
+            </div>
+            <div class="form-group">
+                <label for="tipoSolicitud">Tipo de Solicitud:</label>
+                <select id="tipoSolicitud" name="tipoSolicitud" required>
+                    <option value="Reemplazo">Reemplazo</option>
+                    <option value="Reembolso">Reembolso</option>
+                    <option value="Reparación">Reparación</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" name="descripcion" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Enviar Solicitud</button>
+        </form>
+    </div>
+
+    <script>
+        // Función para manejar el envío del formulario
+        document.getElementById('warrantyForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const newRequest = {
+                idVenta: document.getElementById('idVenta').value,
+                rutCliente: document.getElementById('rutCliente').value,
+                tipoSolicitud: document.getElementById('tipoSolicitud').value,
+                descripcion: document.getElementById('descripcion').value
+            };
+
+            // Aquí puedes agregar la lógica para enviar los datos de la solicitud de garantía al servidor
+            console.log('Nueva solicitud de garantía:', newRequest);
+
+            // Resetear el formulario después de enviar
+            document.getElementById('warrantyForm').reset();
+        });
+    </script>
+</body>
+</html>
